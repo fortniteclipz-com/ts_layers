@@ -1,0 +1,27 @@
+service: ts-layers
+tenant: fortniteclipz
+app: fortniteclipz
+
+provider:
+  name: aws
+  profile: sls-fortniteclipz
+  region: ${self:custom.config.region}
+  runtime: python3.7
+  stage: ${self:custom.config.stage}
+
+custom:
+  config: ${file(../ts_shared/ts_config/ts_config/ts_config_${opt:stage, 'dev'}.yml)}
+
+layers:
+  layer--tesseract:
+    name: ts-layers-${self:custom.config.stage}-layer--tesseract
+    path: tesseract/layer
+    retain: false
+    compatibleRuntimes:
+      - python3.7
+  layer--ffmpeg:
+    name: ts-layers-${self:custom.config.stage}-layer--ffmpeg
+    path: ffmpeg/layer
+    retain: false
+    compatibleRuntimes:
+      - python3.7
